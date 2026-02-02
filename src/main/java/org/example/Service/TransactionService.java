@@ -19,7 +19,6 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
     private DiscountService discountService;
 
-    // Constructor (for dependency injection later)
     public TransactionService(AccountRepository accountRepository, TransactionRepository transactionRepository, DiscountService discountService) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;

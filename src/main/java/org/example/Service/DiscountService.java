@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public class DiscountService {
     private TransactionRepository transactionRepository;
 
-    // Constructor (for dependency injection later)
     public DiscountService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
@@ -25,17 +24,15 @@ public class DiscountService {
         int month = now.getMonthValue();
         int year = now.getYear();
 
-        // Count transactions for this customer in current month
         long transactionCount = transactionRepository.countByCustomerAndMonth(
                 customer, month, year, "TRANSFER");
 
-        // Check 4-year customer discount
+
         boolean isOver4Years = customer.getRegistrationDate().isBefore(Instant.from(now.minusYears(4)));
         if (isOver4Years && transactionCount < 3) {
             discountPercent = discountPercent.add(BigDecimal.valueOf(10));
         }
 
-        // Check transaction count based discount
         if (transactionCount >= 3) {
             if ("BUSINESS".equals(customer.getType()) && amount.compareTo(BigDecimal.valueOf(150000)) > 0) {
                 discountPercent = discountPercent.add(BigDecimal.valueOf(27));
